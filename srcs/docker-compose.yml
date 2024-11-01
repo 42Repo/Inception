@@ -3,6 +3,7 @@ services:
     container_name: mariadb
     build:
       context: ./requirements/mariadb
+      dockerfile: Dockerfile
     volumes:
       - mariadb_data:/var/lib/mysql
     environment:
@@ -10,13 +11,21 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    restart: unless-stopped
     networks:
       - inception
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   wordpress:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
+      dockerfile: Dockerfile
     volumes:
       - wordpress_data:/var/www/
     depends_on:
@@ -30,21 +39,36 @@ services:
       WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
       WP_USER: ${WP_USER}
       WP_USER_PASSWORD: ${WP_USER_PASSWORD}
+    restart: unless-stopped
     networks:
       - inception
+    healthcheck:
+      test: ["CMD", "pidof", "php-fpm7.4"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   nginx:
     container_name: nginx
     build:
       context: ./requirements/nginx
+      dockerfile: Dockerfile
     ports:
       - "443:443"
     depends_on:
       - wordpress
     volumes:
       - wordpress_data:/var/www/
+    restart: always
     networks:
       - inception
+    healthcheck:
+      test: ["CMD", "curl", "-k", "https://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
 volumes:
   mariadb_data:

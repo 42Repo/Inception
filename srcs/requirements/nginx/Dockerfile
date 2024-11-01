@@ -1,7 +1,7 @@
 FROM debian:11
 
 RUN apt-get update -y && \
-    apt-get install -y nginx openssl 
+    apt-get install -y nginx openssl curl
 
 RUN mkdir -p /etc/nginx/ssl
 
