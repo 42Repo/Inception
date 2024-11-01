@@ -15,8 +15,8 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
-RUN chmod 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
+RUN chmod 755 /var/www/
+RUN chown -R www-data:www-data /var/www/
 
 ENTRYPOINT ["entrypoint.sh"]
 

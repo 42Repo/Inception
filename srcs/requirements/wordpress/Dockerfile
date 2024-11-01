@@ -3,7 +3,7 @@ FROM debian:11
 RUN apt-get update -y && \
     apt-get install -y php7.4 php-fpm php-mysql wget mariadb-client
 
-RUN mkdir -p /var/www/html
+RUN mkdir -p /var/www/wordpress
 
 RUN wget https://fr.wordpress.org/wordpress-6.6.2-fr_FR.tar.gz -O /tmp/wordpress.tar.gz && \
     tar -xzf /tmp/wordpress.tar.gz -C /var/www/ && \
