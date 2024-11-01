@@ -1,7 +1,7 @@
 FROM debian:11
 
 RUN apt-get update -y && \
-    apt-get install -y php7.4 php-fpm php-mysql wget mariadb-client procps
+    apt-get install -y php7.4 php-fpm php-mysql wget mariadb-client procps php-redis redis-tools
 
 RUN mkdir -p /var/www/wordpress
 
@@ -9,7 +9,7 @@ RUN wget https://fr.wordpress.org/wordpress-6.6.2-fr_FR.tar.gz -O /tmp/wordpress
     tar -xzf /tmp/wordpress.tar.gz -C /var/www/ && \
     rm /tmp/wordpress.tar.gz
 
-RUN chown -R root:root /var/www/wordpress
+RUN chown -R www-data:www-data /var/www/wordpress
 
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 

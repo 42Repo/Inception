@@ -30,6 +30,7 @@ services:
       - wordpress_data:/var/www/
     depends_on:
       - mariadb
+      - redis
     environment:
       SQL_USER: ${MYSQL_USER}
       SQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -69,6 +70,23 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+
+redis:
+  container_name: redis
+  build:
+    context: ./requirements/redis
+    dockerfile: Dockerfile
+  ports:
+    - "6379:6379"
+  restart: unless-stopped
+  networks:
+    - inception
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 30s
+    timeout: 10s
+    retries: 5
+    start_period: 30s
 
 volumes:
   mariadb_data:

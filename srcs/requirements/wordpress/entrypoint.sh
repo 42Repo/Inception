@@ -5,6 +5,11 @@ until mysqladmin ping -h mariadb -u"${SQL_USER}" -p"${SQL_PASSWORD}"; do
     sleep 2
 done
 
+until redis-cli -h redis -p 6379 ping | grep -q PONG; do
+    echo "Waiting for Redis to be up..."
+    sleep 2
+done
+
 mkdir -p /run/php
 
 cd /var/www/wordpress
@@ -17,6 +22,16 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
         --dbhost="mariadb:3306" \
         --path='/var/www/wordpress' \
         --allow-root
+
+    if ! grep -q "define('WP_REDIS_HOST', 'redis');" /var/www/wordpress/wp-config.php; then
+        sed -i "/^\/\* That's all, stop editing! Happy publishing. \*\//i \
+        define('WP_REDIS_HOST', 'redis');\n\
+        define('WP_REDIS_PORT', 6379);\n\
+        define('WP_REDIS_DATABASE', 0);\n\
+        define('WP_REDIS_TIMEOUT', 1);\n\
+        define('WP_REDIS_READ_TIMEOUT', 1);\n\
+        define('WP_REDIS_PREFIX', 'my_site');\n" /var/www/wordpress/wp-config.php
+    fi
 
     wp core install \
         --url="https://${DOMAIN_NAME}" \
@@ -32,5 +47,12 @@ fi
 if ! wp user get "${WP_USER}" --path='/var/www/wordpress' --allow-root > /dev/null 2>&1; then
     wp user create "${WP_USER}" user@asuc.42.fr --user_pass="${WP_USER_PASSWORD}" --role=author --path='/var/www/wordpress' --allow-root
 fi
+
+wp plugin install redis-cache --allow-root
+if ! wp plugin is-active redis-cache --allow-root; then
+    wp plugin activate redis-cache --allow-root
+fi
+
+wp redis enable --allow-root --path=/var/www/wordpress
 
 php-fpm7.4 -F
