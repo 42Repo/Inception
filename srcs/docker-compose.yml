@@ -76,8 +76,6 @@ services:
     build:
       context: ./requirements/redis
       dockerfile: Dockerfile
-    ports:
-      - "6379:6379"
     restart: unless-stopped
     networks:
       - inception
