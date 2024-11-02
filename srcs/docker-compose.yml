@@ -55,6 +55,8 @@ services:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
     ports:
       - "443:443"
     depends_on:
@@ -64,6 +66,8 @@ services:
     restart: always
     networks:
       - inception
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
     healthcheck:
       test: ["CMD", "curl", "-k", "https://localhost"]
       interval: 30s

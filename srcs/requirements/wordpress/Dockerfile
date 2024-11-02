@@ -1,7 +1,7 @@
 FROM debian:11
 
 RUN apt-get update -y && \
-    apt-get install -y php7.4 php-fpm php-mysql wget mariadb-client procps php-redis redis-tools
+    apt-get install -y php7.4 php7.4-fpm php7.4-mysql wget mariadb-client procps php7.4-redis redis-tools
 
 RUN mkdir -p /var/www/wordpress
 
