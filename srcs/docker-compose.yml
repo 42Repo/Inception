@@ -27,7 +27,7 @@ services:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
     volumes:
-      - wordpress_data:/var/www/
+      - wordpress_data:/var/www/wordpress
     depends_on:
       - mariadb
       - redis
@@ -62,12 +62,16 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wordpress_data:/var/www/
+      - wordpress_data:/var/www/wordpress
+      - adminer_data:/var/www/adminer
+      - static_site_data:/var/www/static_site
     restart: unless-stopped
     networks:
       - inception
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
+      ADMINER_DOMAIN: ${ADMINER_DOMAIN}
+      STATIC_DOMAIN: ${STATIC_DOMAIN}
     healthcheck:
       test: ["CMD", "curl", "-k", "https://localhost"]
       interval: 30s
@@ -135,6 +139,36 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+  
+  adminer:
+    container_name: adminer
+    build:
+      context: ./requirements/adminer
+      dockerfile: Dockerfile
+    depends_on:
+      - mariadb
+    volumes:
+      - adminer_data:/var/www/adminer
+    restart: unless-stopped
+    networks:
+      - inception
+    healthcheck:
+      test: ["CMD", "pidof", "php-fpm7.4"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  static_site:
+    container_name: static_site
+    build:
+      context: ./requirements/static_site
+      dockerfile: Dockerfile
+    volumes:
+      - static_site_data:/var/www/static_site
+    restart: unless-stopped
+    networks:
+      - inception
 
 volumes:
   mariadb_data:
@@ -148,6 +182,18 @@ volumes:
     driver_opts:
       type: none
       device: /home/asuc/data/wordpress
+      o: bind
+  static_site_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/asuc/data/static_site
+      o: bind
+  adminer_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/asuc/data/adminer
       o: bind
 
 networks:

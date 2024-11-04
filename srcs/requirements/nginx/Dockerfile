@@ -14,6 +14,9 @@ RUN openssl req -x509 -nodes -days 365 \
     -out /etc/nginx/ssl/${DOMAIN_NAME}.crt
 
 COPY conf/nginx.conf.template /etc/nginx/nginx.conf.template
+COPY conf/sites-available/adminer.conf.template /etc/nginx/sites-available/adminer.conf.template
+COPY conf/sites-available/static_site.conf.template /etc/nginx/sites-available/static_site.conf.template
+COPY conf/sites-available/wordpress.conf.template /etc/nginx/sites-available/wordpress.conf.template
 COPY entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh

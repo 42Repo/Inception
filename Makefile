@@ -8,6 +8,8 @@ build:
 up:
 	mkdir -p /home/asuc/data/mariadb
 	mkdir -p /home/asuc/data/wordpress
+	mkdir -p /home/asuc/data/adminer
+	mkdir -p /home/asuc/data/static_site
 	docker-compose -f $(COMPOSE_FILE) up -d
 
 down:

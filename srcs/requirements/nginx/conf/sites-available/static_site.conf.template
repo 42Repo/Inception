@@ -1,0 +1,16 @@
+server {
+    listen 443 ssl;
+    server_name ${STATIC_DOMAIN};
+
+    ssl_certificate /etc/nginx/ssl/${DOMAIN_NAME}.crt;
+    ssl_certificate_key /etc/nginx/ssl/${DOMAIN_NAME}.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    root /var/www/static_site;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
