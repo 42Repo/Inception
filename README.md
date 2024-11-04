@@ -3,27 +3,32 @@
 ## Setup Instructions
 
 1. Clone the repository:
+
    ```sh
    git clone https://github.com/42Repo/Inception.git
    cd Inception
    ```
 
 2. Build and run the application using the Makefile:
+
    ```sh
    make
    ```
 
 3. To stop the application:
+
    ```sh
    make down
    ```
 
 4. To clean up the Docker environment:
+
    ```sh
    make clean
    ```
 
 5. To remove all data and start fresh:
+
    ```sh
    make fclean
    ```
