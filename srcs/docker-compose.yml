@@ -63,7 +63,7 @@ services:
       - wordpress
     volumes:
       - wordpress_data:/var/www/
-    restart: always
+    restart: unless-stopped
     networks:
       - inception
     environment:
