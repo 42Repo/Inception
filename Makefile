@@ -1,4 +1,5 @@
-COMPOSE_FILE = srcs/docker-compose.yml
+COMPOSE_FILE	= srcs/docker-compose.yml
+DATA_DIR 		= /home/asuc/data
 
 all: build up
 
@@ -6,21 +7,21 @@ build:
 	docker-compose -f $(COMPOSE_FILE) build
 
 up:
-	mkdir -p /home/asuc/data/mariadb
-	mkdir -p /home/asuc/data/wordpress
-	mkdir -p /home/asuc/data/adminer
-	mkdir -p /home/asuc/data/static_site
+	mkdir -p $(DATA_DIR)/mariadb
+	mkdir -p $(DATA_DIR)/wordpress
+	mkdir -p $(DATA_DIR)/adminer
+	mkdir -p $(DATA_DIR)/static_site
 	docker-compose -f $(COMPOSE_FILE) up -d
 
 down:
 	docker-compose -f $(COMPOSE_FILE) down
 
-clean: down
+clean: 
 	docker system prune -af
-	docker volume ls -q | xargs -r docker volume rm
 
-fclean: clean
-	sudo rm -rf /home/asuc/data
+fclean: down clean
+	docker volume ls -q | xargs -r docker volume rm
+	sudo rm -rf $(DATA_DIR)
 
 re: fclean all
 

@@ -1,5 +1,6 @@
 services:
   mariadb:
+    image: mariadb
     container_name: mariadb
     build:
       context: ./requirements/mariadb
@@ -22,6 +23,7 @@ services:
       start_period: 30s
 
   wordpress:
+    image: wordpress
     container_name: wordpress
     build:
       context: ./requirements/wordpress
@@ -51,6 +53,7 @@ services:
       start_period: 30s
 
   nginx:
+    image: nginx
     container_name: nginx
     build:
       context: ./requirements/nginx
@@ -80,6 +83,7 @@ services:
       start_period: 30s
 
   redis:
+    image: redis
     container_name: redis
     build:
       context: ./requirements/redis
@@ -95,6 +99,7 @@ services:
       start_period: 30s
 
   portainer:
+    image: portainer
     container_name: portainer
     build:
       context: ./requirements/portainer
@@ -116,6 +121,7 @@ services:
       start_period: 30s
 
   ftp:
+    image: ftp
     container_name: ftp
     build:
       context: ./requirements/ftp
@@ -141,6 +147,7 @@ services:
       start_period: 30s
   
   adminer:
+    image: adminer
     container_name: adminer
     build:
       context: ./requirements/adminer
@@ -160,13 +167,14 @@ services:
       start_period: 30s
 
   static_site:
+    image: static_site
     container_name: static_site
     build:
       context: ./requirements/static_site
       dockerfile: Dockerfile
     volumes:
       - static_site_data:/var/www/static_site
-    restart: unless-stopped
+    restart: on-failure
     networks:
       - inception
 
