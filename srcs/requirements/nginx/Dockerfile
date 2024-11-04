@@ -20,4 +20,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chmod 755 /var/www/
 RUN chown -R www-data:www-data /var/www/
 
+EXPOSE 443
+
 ENTRYPOINT ["entrypoint.sh"]
