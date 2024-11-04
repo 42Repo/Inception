@@ -9,4 +9,7 @@ COPY entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+EXPOSE 21
+EXPOSE 40000-40005
+
 ENTRYPOINT ["entrypoint.sh"]
