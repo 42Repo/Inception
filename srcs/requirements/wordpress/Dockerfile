@@ -10,6 +10,7 @@ RUN wget https://fr.wordpress.org/wordpress-6.6.2-fr_FR.tar.gz -O /tmp/wordpress
     rm /tmp/wordpress.tar.gz
 
 RUN chown -R www-data:www-data /var/www/wordpress
+RUN chmod -R g+w /var/www/wordpress
 
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
