@@ -5,7 +5,7 @@ RUN apt-get update -y && \
 
 RUN mkdir -p /var/www/wordpress
 
-RUN wget https://fr.wordpress.org/wordpress-6.6.2-fr_FR.tar.gz -O /tmp/wordpress.tar.gz && \
+RUN wget https://fr.wordpress.org/wordpress-6.7.2-fr_FR.tar.gz -O /tmp/wordpress.tar.gz && \
     tar -xzf /tmp/wordpress.tar.gz -C /var/www/ && \
     rm /tmp/wordpress.tar.gz
 
