@@ -7,4 +7,4 @@ if [ ! -f /var/www/adminer/index.php ]; then
     chown -R www-data:www-data /var/www/adminer
 fi
 
-php-fpm7.4 -F
+exec php-fpm7.4 -F

@@ -55,4 +55,4 @@ fi
 
 wp redis enable --allow-root --path=/var/www/wordpress
 
-php-fpm7.4 -F
+exec php-fpm7.4 -F
